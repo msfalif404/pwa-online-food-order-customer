@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Produk | Jajan Yuk</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- User Defined Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container-fluid mb-5">
+        <div class="row">
+            <div class="col-2 d-none d-lg-block bg-white overflow-auto position-fixed w-100 vh-100 py-4">
+                <nav class="d-flex flex-column h-100">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-primary" href="./dashboard.html">Dashboards</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#ondelivery-products" id="ondelivery-products">On Delivery Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#delivered-products" id="delivered-products">Delivered Products</a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column h-100 justify-content-end">
+                        <li class="nav-item">
+                            <a class="btn btn-block btn-danger" href="#" id="logout-button"><i data-feather="power"></i> Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-10 py-4 ml-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="./dashboard.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" id="current-page" aria-current="page"></li>
+                    </ol>
+                </nav>
+                <div class="row">
+                    <div class="col-12 d-flex mb-3">
+                        <h3 class="font-weight-bold">Product Order Details</h3>
+                        <div class="ml-auto">
+                            <a href="dashboard.html" class="btn btn-secondary">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="" id="alert-container" data-dismiss="alert"></div>
+                <div class="row">
+                    <div class="col-lg-12" id="accordion-container">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar On Mobile -->
+    <nav class="bg-white border-top fixed-bottom d-lg-none d-flex justify-content-center align-items-center w-100 py-2">
+        <a href="./dashboard.html#ondelivery-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="ondelivery-products">
+            <i href="./dashboard.html#ondelivery-products" class="fas fa-boxes"></i>
+            <span href="#ondelivery-products">On Delivery Products</span>
+        </a>
+        <a href="./dashboard.html#delivered-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="delivered-products">
+            <i href="#delivered-products" class="fas fa-boxes"></i>
+            <span href="#delivered-products">Delivered Products</span>
+        </a>
+        <a href="#logout" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="logout-mobile">
+            <i href="#logout" class="fas fa-power-off"></i>
+            <span href="#logout">Logout</span>
+        </a>
+    </nav>
+   <!-- Bootstrap -->
+   <script src="../js/jquery-3.5.1.slim.min.js"></script>
+   <script src="../js/popper.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+    <script type="module">
+        import {getAllProductCourrier, putProductOrderCourrier} from "../js/services/api/employee/order-courrier.js";
+        import {logoutATAPI} from "../js/services/api/logout-token.js";
+        import {refreshTokenAPI} from "../js/services/api/refresh-token.js";
+        import {isTokenExpired} from "../js/helpers/token-expired-helper.js";
+        
+        let urlParams = new URLSearchParams(window.location.search);
+        let idParam = urlParams.get("code");
+
+        const EMPLOYEE_TOKEN = JSON.parse(localStorage.getItem("EMPLOYEE_TOKEN")) ?? null;
+        if(EMPLOYEE_TOKEN == null){
+            location.href = "../login.html";
+            sessionStorage.setItem("message", "Waktu Anda Telah Habis, Harap Masuk Kembali");
+        }
+        else {
+            const {access_token} = EMPLOYEE_TOKEN;
+            getAllProductCourrier(access_token)
+            .then(response => {
+                if(response.msg =="token expired"){
+                    refreshTokenAPI(access_token)
+                        .then(response => isTokenExpired(response, access_token, "../login.html"));
+                }
+                if(response.msg == "Token has been revoked"){
+                    localStorage.removeItem("TOKEN");
+                    location.href = "../login.html";
+                }
+                document.getElementById("accordion-container").innerHTML = `<div class="accordion" id="accordionExample">
+                            <div class="card">
+                              <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Data Pesanan <span class="icon-arrow-down ml-auto"></span>
+                                  </button>
+                                </h2>
+                              </div>
+                          
+                              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                  <form>
+                                      <div class="form-group">
+                                          <label for="code-order">Code Order</label>
+                                          <input type="text" name="code-order" id="code-order" class="form-control" readonly="readonly">
+                                      </div>
+                                    <div class="form-group">
+                                        <label for="date-order">Date Order</label>
+                                        <input type="text" name="date-order" id="date-order" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customer-name">Customer Name</label>
+                                        <input type="text" name="customer-name" id="customer-name" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customer-email">Customer Email</label>
+                                        <input type="text" name="customer-email" id="customer-email" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customer-phone">Customer Phone</label>
+                                        <input type="text" name="customer-phone" id="customer-phone" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="order-quantity">Jumlah Pesanan</label>
+                                        <input type="text" name="order-quantity" id="order-quantity" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <input type="text" name="address" id="address" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="distance">Distance</label>
+                                        <input type="text" name="distance" id="distance" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="latitude">latitude</label>
+                                        <input type="text" name="latitude" id="latitude" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="longitude">longitude</label>
+                                        <input type="text" name="longitude" id="longitude" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fee">Fee</label>
+                                        <input type="text" name="fee" id="fee" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="final-price">Final Price</label>
+                                        <input type="text" name="final-price" id="final-price" class="form-control" readonly="readonly">
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card" id="process-product-container">
+                              <div class="card-header" id="headingTwo">
+                                <h2 class="mb-0">
+                                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Proses Pesanan <span class="icon-arrow-down ml-auto"></span>
+                                  </button>
+                                </h2>
+                              </div>
+                              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div class="card-body">
+                                  <form id="process-product">
+                                      <div class="form-group">
+                                          <label for="Code Confirmation">Code Confirmation</label>
+                                          <input type="text" name="code-confirmation" id="code-confirmation" class="form-control" placeholder="Code Confirmation" required="required">
+                                      </div>
+                                      <input type="submit" value="Proses Pesanan" class="btn btn-primary btn-block">
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>`;
+               const statusData = response.data.filter(element => element.codeOrder == idParam);
+               let statusDataRaw = "";
+
+               let detailsArray = [];
+               statusData.forEach(element => {
+                   const {codeOrder, dateOrder, address, distance, coordinat: {latitude, longitude}, customer: {name, email, phone}, fee, finalPrice, details} = element;
+                   detailsArray = details;
+                   if(element.status == "diterima"){
+                    document.getElementById("process-product-container").classList.add("d-none");
+                    }
+                    let date = new Date(dateOrder);
+                    let UTCTime = date.toLocaleTimeString("id-ID");
+                    let UTCDate = date.toLocaleDateString('id-ID', {timeZone: "UTC"});
+                    let fullUTC = `${UTCDate} - ${UTCTime.replaceAll(".",":")}`;
+                   document.getElementById("code-order").value = codeOrder;
+                   document.getElementById("date-order").value = fullUTC;
+                   document.getElementById("address").value = address;
+                   document.getElementById("distance").value = distance;
+                   document.getElementById("latitude").value = latitude;
+                   document.getElementById("longitude").value = longitude;
+                   document.getElementById("customer-name").value = name;
+                   document.getElementById("customer-email").value = email;
+                   document.getElementById("customer-phone").value = phone;
+                   document.getElementById("fee").value = `Rp. ${fee.toLocaleString("id-ID")}`;
+                   document.getElementById("final-price").value = `Rp. ${finalPrice.toLocaleString("id-ID")}`;
+
+                   const alertContainer = document.getElementById("alert-container");
+                   const processProductForm = document.getElementById("process-product");
+                   const codeConfrimationInput = document.getElementById("code-confirmation");
+                   processProductForm.addEventListener("submit", function(event){
+                       event.preventDefault();
+                       processProductForm[1].value += "...";
+                       putProductOrderCourrier(idParam, "diterima", codeConfrimationInput.value, access_token).then(response => {
+                            if(response.msg =="token expired"){
+                                refreshTokenAPI(access_token)
+                                    .then(response => isTokenExpired(response, access_token, "../login.html"));
+                            }
+                            else if(response.msg == "Token has been revoked"){
+                                localStorage.removeItem("TOKEN");
+                                location.href = "../login.html";
+                            }
+                            else if(response.msg == "Success"){
+                               sessionStorage.setItem("message", `Product ${codeOrder} berhasil diproses`);
+                               location.href = "./dashboard.html";
+                            }
+                            else if(response.msg == "Wrong Confirm Code"){
+                               alertContainer.innerHTML = "Kode Konfirmasi Produk Salah !";
+                               alertContainer.classList.add("alert","alert-danger","alert-dismissible","fade","show");
+                            }
+                       });
+                   });
+               });
+               let jumlahPesan = 0;
+               detailsArray.forEach(element => {
+                   const {Amount} = element;
+                   jumlahPesan += Amount;
+                   document.getElementById("order-quantity").value = jumlahPesan;
+               });
+            });
+
+            const logoutButton = document.getElementById("logout-button");
+                    logoutButton.addEventListener("click", function(){
+                        logoutButton.innerHTML += "...";
+                        logoutATAPI(access_token).then(response => {
+                            if(response.msg == "Successfully logged out"){
+                                localStorage.removeItem("EMPLOYEE_TOKEN");
+                                sessionStorage.removeItem("message");
+                                location.href = "../login.html";
+                            }
+                        });
+                    });
+        }
+    </script>
+</body>
+</html>

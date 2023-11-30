@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row d-none d-lg-block">
+        <div class="col-12">
+            <nav>
+                <ol class="breadcrumb bg-white">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Detail Pemesanan</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 mb-4 mb-lg-0 d-flex">
+           <h3 id="customer-name">Halo, selamat datang </h3> 
+           <div class="ml-auto">
+               <a href="#account-detail" class="btn btn-secondary" id="order-details-back">Back</a>
+           </div>
+        </div>
+        <div class="col-lg-8 mb-4 mb-lg-0" id="order-details-code-order-container">
+            <div class="col-12">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4 mb-lg-0" id="order-details-code-order-container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light px-5">
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Review</th>
+                      </tr>
+                    </thead>
+                    <tbody id="product-container">
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border text-primary"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="col-12 mb-4 mb-lg-0 d-none" id="cancel-reason-container">
+            <a class="btn btn-danger btn-block" id="cancel-reason">Batalkan Pesanan</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kasir | Jajan Yuk</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- User Defined Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container-fluid mb-5">
+        <div class="row">
+            <div class="col-2 d-none d-lg-block bg-white overflow-auto position-fixed w-100 vh-100 py-4" id="sidebar-container">
+                <!-- The content generated from sidebar.html and spa-helper.js -->
+            </div>
+            <div class="col-12 col-lg-10 ml-auto py-4" id="product-pages-container">
+                <!-- The content generated from pages/all-products-page.html and spa-helper.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar On Mobile -->
+    <nav class="bg-white border-top fixed-bottom d-lg-none d-flex justify-content-center align-items-center w-100 py-2 bottom-navbar" id="bottom-navbar-container">
+        <!-- The content generated from bottom-navbar.html and spa-helper.js -->
+    </nav>
+
+    <!-- Bootstrap -->
+    <script src="../js/jquery-3.5.1.slim.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/helpers/spa-kurir-helper.js" type="module"></script>
+</body>
+</html>

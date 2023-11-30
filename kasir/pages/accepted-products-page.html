@@ -1,0 +1,46 @@
+<div>
+    <p class="text-muted small font-weight-600">Overview</p>
+</div>
+<div class="d-flex">
+    <h3 class="font-weight-bold">Accepted Products Dashboard</h3>
+    <a class="btn btn-danger ml-auto d-block d-lg-none " href="#" id="logout-button"><i data-feather="power"></i> Logout</a>
+</div>
+<hr />
+<div class="" id="alert-container" data-dismiss="alert"></div>
+<div class="mb-4">
+    <form class="w-100">
+        <input type="text" id="search-product" class="form-control" placeholder="Search Product Code">
+    </form>
+</div>
+<div class="card">
+    <div class="card-header bg-white">
+        <h6>All Accepted Products</h6>
+    </div>
+    <div class="card-body bg-white p-0 table-responsive" id="product-parent-container">
+        <table class="table">
+            <thead class="thead-light px-5">
+              <tr>
+                <th>Code Order</th>
+                <th>Tanggal Pemesanan</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="product-container">
+                <tr>
+                    <td colspan="5">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="card-footer bg-white">
+        <nav>
+            <ul class="pagination" id="pagination-container">
+            </ul>
+        </nav>
+    </div>
+</div>

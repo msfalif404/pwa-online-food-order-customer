@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Nunito:wght@300;400;600&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+input[type="submit"]{
+    font-family: 'Montserrat', sans-serif;
+}
+p, a, small, label, input::placeholder {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+}
+textarea {
+    resize: none;
+}
+.font-montserrat {
+    font-family: 'Montserrat', sans-serif !important;
+}
+.font-nunito {
+    font-family: 'Nunito', sans-serif;
+}
+.font-weight-400 {
+    font-weight: 400 !important;
+}
+.font-weight-500 {
+    font-weight: 500 !important;
+}
+.font-weight-600 {
+    font-weight: 600 !important;
+}
+.form-control {
+    transition: border-color .125s ease-in-out;
+}
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+.btn {
+    transition: color .125s ease-in-out,background-color .125s ease-in-out,border-color .125s ease-in-out,box-shadow .125s ease-in-out;
+}
+
+/* Resizing bootstrap card size */
+.card-img-top-resize {
+    width: 100% !important;
+    height: 175px !important;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.nav-bottom {
+    margin-top: 100px;
+}
+.hovered-icon {
+    transition-duration: 300ms;
+}
+.hovered-icon:hover {
+    cursor: pointer;
+    transform: scale(1.25);
+}
+.cart-counter {
+    vertical-align: top;
+    margin-top: -12px;
+    margin-left: -18px;
+}
+@media screen and (min-width:992px){
+    #product-recommendation {
+        margin-top: 7rem !important;
+    }
+    .modal-lg {
+        width: 693px;
+    }
+    .modal-content {
+        position: absolute;
+        top: 40px;
+        right: 55px;
+        border-radius: 0;
+    }
+}
+@media screen and (max-width:992px){
+    #product-recommendation {
+        margin-top: 4rem !important;
+    }
+    .modal-content {
+        top: 60px;
+        right: 0;
+    }
+}
+.list-group-item {
+    transition-duration: 175ms;
+}
+.list-group-item:hover {
+    background: #efefef;
+    cursor: pointer;
+}
+.hovered:hover {
+    cursor: pointer;
+}
+canvas.mapboxgl-canvas {
+    width: 0;
+    height: 0;
+}
+#map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%;}
+.mapboxgl-ctrl-logo, .mapboxgl-ctrl .mapboxgl-ctrl-attrib .mapboxgl-compact, .mapboxgl-ctrl-attrib-button, .mapboxgl-ctrl .mapboxgl-ctrl-attrib, .mapboxgl-compact {
+    display: none !important;
+}
+.star {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    padding: 0 0.15em;
+}
+.star.selected {
+    color: gold;
+}
+
+.card-index-mobile {
+    height: 65vh !important;
+}
+@media (min-width: 1px) and (max-width: 420px) {
+    .card-index-mobile {
+        height: 57vh !important;
+    }
+}
+@media (min-width: 421px) and (max-width: 575.98px) {
+    .card-index-mobile {
+        height: 45vh !important;
+    }
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .card-index-mobile {
+        height: 35vh !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .card-index-mobile {
+        height: 35vh !important;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .card-index-mobile {
+        height: 35vh !important;
+    }
+}
+@media (min-width: 1200px) {
+    .card-index-mobile {
+        height: 63vh !important;
+    }
+}
+    .rating {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    }
+    
+    .rating li {
+    list-style-type: none
+    }
+    
+    .rating-item {
+    border: 1px solid #fff;
+    cursor: pointer;
+    font-size:2em;
+    color: orange;
+    }
+    
+    /* initial: make all stars full */
+    .rating-item::before {
+    content: "\2605";
+    }
+    
+    /* make until the clicked star (the rest) empty */
+    .rating-item.active ~ .rating-item::before {
+    content: "\2606";
+    }
+    
+    /* on hover make all full */
+    .rating:hover .rating-item::before {
+    content: "\2605";
+    }
+    
+    /* make until the hovered (the rest) empty */
+    .rating-item:hover ~ .rating-item::before {
+    content: "\2606";
+    }

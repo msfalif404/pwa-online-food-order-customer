@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk | Jajan Yuk</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- User Defined Styles -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center vh-100">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-4">
+                    <h3 class="text-center">Sign In</h3>
+                    <p class="text-muted text-center font-weight-600">Masuk Untuk Memproses Produk Pesanan</p>
+                </div>
+                <div class="mb-4" id="alert-container" data-dismiss="alert"></div>
+                <div class="mb-4">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Masukan username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Masukan password anda" required="required">
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex mb-4">
+                    <input type="submit" value="Masuk" class="btn btn-primary btn-block py-2 text-center font-weight-500" form="login-form">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Order Modal -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" style="z-index: 99999;"  aria-hidden="true" data-focus="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Ingin Membatalkan Pesanan Anda ?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="" id="reason-alert-container"></div>
+              <textarea name="cancel-reason" id="cancel-reason-input" cols="30" rows="10" class="form-control" placeholder="Alasan anda ingin membatalkan pesanan ini..."></textarea>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn btn-danger btn-block" id="cancel-order-button-api">Batalkan Pesanan</a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Confirm Order Modal -->
+    <div class="modal" id="confirmModal" tabindex="-1" style="z-index: 99999;"  aria-hidden="true" data-focus="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Anda Yakin Ingin Memproses Produk Yang Anda Beli ?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Anda masih bisa membatalkannya nanti.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="confirmProcessButtonModal">Proses</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+    <!-- Bootstrap -->
+    <script src="./js/jquery-3.5.1.slim.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <!-- Idb -->
+    <script src="./js/idb.js"></script>
+    <script src="./js/db.js"></script>
+    <!-- User Define Scripts -->
+    <script src="./js/helpers/spa-customer-helper.js" type="module"></script>
+    <script>
+        if("serviceWorker" in navigator){
+            window.addEventListener("load", function(){
+                navigator.serviceWorker.register("./service-worker.js")
+                    .then(function(){
+                        console.log("Happy Eat :)");
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

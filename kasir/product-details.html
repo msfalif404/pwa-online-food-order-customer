@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Jajan Yuk</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- User Defined Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        img:hover {
+            transition-duration: 500ms;
+            opacity: .9;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container-fluid mb-5">
+        <div class="row">
+            <div class="col-2 d-none d-lg-block bg-white overflow-auto position-fixed w-100 vh-100 py-4">
+                <nav class="d-flex flex-column h-100">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-primary" href="./dashboard.html">Dashboards</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#pending-products" id="pending-products">Pending Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#processed-products" id="processed-products">Processed Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#ondelivery-products" id="ondelivery-products">On Delivery Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#accepted-products" id="accepted-products">Accepted Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="./dashboard.html#canceled-products" id="canceled-products">Canceled Products</a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column h-100 justify-content-end">
+                        <li class="nav-item">
+                            <a class="btn btn-block btn-danger" href="#" id="logout-button"><i data-feather="power"></i> Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-10 py-4 ml-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="./dashboard.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" id="current-page" aria-current="page"></li>
+                    </ol>
+                </nav>
+                <div class="row">
+                    <div class="col-12 d-flex mb-3">
+                        <h3 class="font-weight-bold">Product Order Details</h3>
+                        <div class="ml-auto">
+                            <a href="./dashboard.html" class="btn btn-secondary">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" id="product-alert-container"></div>
+                <div class="" id="alert-container" data-dismiss="alert"></div>
+                <div class="row">
+                    <div class="col-lg-12" id="accordion-container">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar On Mobile -->
+    <nav class="bg-white border-top fixed-bottom d-lg-none d-flex justify-content-center align-items-center w-100 py-2">
+        <a href="./dashboard.html#pending-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="pending-products">
+            <i href="#pending-products" class="fas fa-boxes"></i>
+            <span href="#pending-products">Pending</span>
+        </a>
+        <a href="./dashboard.html#processed-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="processed-products">
+            <i href="#processed-products" class="fas fa-boxes"></i>
+            <span href="#processed-products">Processed</span>
+        </a>
+        <a href="./dashboard.html#ondelivery-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="ondelivery-products">
+            <i href="#ondelivery-products" class="fas fa-boxes"></i>
+            <span href="#ondelivery-products">On Delivery</span>
+        </a>
+        <a href="./dashboard.html#accepted-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="accepted-products">
+            <i href="#accepted-products" class="fas fa-boxes"></i>
+            <span href="#accepted-products">Accepted</span>
+        </a>
+        <a href="./dashboard.html#canceled-products" class="d-flex flex-column justify-content-center align-items-center flex-grow-1 text-secondary small" id="canceled-products">
+            <i href="#canceled-products" class="fas fa-boxes"></i>
+            <span href="#canceled-products">Canceled</span>
+        </a>
+    </nav>
+   <!-- Bootstrap -->
+   <script src="../js/jquery-3.5.1.slim.min.js"></script>
+   <script src="../js/popper.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+    <script type="module">
+        import {getAllProductEmployee} from "../js/services/api/employee/crud-employee.js";
+        import {logoutATAPI} from "../js/services/api/logout-token.js";
+        import {showProductDetail} from "../js/helpers/crud-kasir-helper.js";
+        import {refreshTokenAPI} from "../js/services/api/refresh-token.js";
+        import {isTokenExpired} from "../js/helpers/token-expired-helper.js";
+        
+        let urlParams = new URLSearchParams(window.location.search);
+        let idParam = urlParams.get("code");
+
+        const EMPLOYEE_TOKEN = JSON.parse(localStorage.getItem("EMPLOYEE_TOKEN")) ?? null;
+        if(EMPLOYEE_TOKEN == null){
+            location.href = "../index.html";
+            sessionStorage.setItem("message", "Waktu Anda Telah Habis, Harap Masuk Kembali");
+        }
+        else {
+            const {access_token} = EMPLOYEE_TOKEN;
+            getAllProductEmployee(access_token)
+            .then(response => {
+                if(response.msg =="token expired"){
+                    refreshTokenAPI(access_token)
+                        .then(response => isTokenExpired(response, access_token, "../index.html"));
+                }
+                if(response.msg == "Token has been revoked"){
+                    localStorage.removeItem("TOKEN");
+                    location.href = "../index.html";
+                }
+                showProductDetail(response, idParam);
+            });
+
+            const logoutButton = document.getElementById("logout-button");
+                    logoutButton.addEventListener("click", function(){
+                        logoutButton.innerHTML += "...";
+                        logoutATAPI(access_token).then(response => {
+                            if(response.msg == "Successfully logged out"){
+                                localStorage.removeItem("EMPLOYEE_TOKEN");
+                                sessionStorage.removeItem("message");
+                                location.href = "../index.html";
+                            }
+                        });
+                    });
+        }
+    </script>
+</body>
+</html>
